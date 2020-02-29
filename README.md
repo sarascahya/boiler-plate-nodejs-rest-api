@@ -27,3 +27,5 @@ example:
 `model:generate --name <ModelName> --attributes <Attr1>:<Type>,<Attr2>:<Type>`
 example:
 `model:generate --name Event --attributes title:string,description:string`
+
+find more command on sequelize-cli repo https://github.com/sequelize/cli
