@@ -1,19 +1,19 @@
-#Simple API Starter
+# Simple API Starter
 This is not a real project, i use this just for learning how to create basic rest api
 
-##This project use :
+## This project use :
 
 - docker
 - expressjs
 - sequelize
 - postgresql
 
-##Instalation :
+## Instalation :
 1. Clone this repo
 2. Run `docker-compose up --build`
 3. Access on http://localhost:3000
 
-##Command
+## Command
 Please add 
 `docker-compose exec api npx sequelize` before every command
 example:
