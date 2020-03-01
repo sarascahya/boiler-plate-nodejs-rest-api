@@ -5,7 +5,7 @@ const {
   findById, 
   destroy, 
   update 
-} = require('../controller/events.controller')
+} = require('../controllers/events.controller')
 
 const eventRouter = Router()
 
