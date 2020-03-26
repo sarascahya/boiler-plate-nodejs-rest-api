@@ -14,18 +14,13 @@ This is not a real project, i use this just for learning how to create basic res
 3. Access on http://localhost:3000
 
 ## Command
-Please add 
-`docker-compose exec api npx sequelize` before every command
-example:
-`docker-compose exec api npx sequelize db:create`
-
-
-- create database `db:create`
-- run migrate `db:migrate`
-- run rollback to migration `db:migrate:undo`
-- create model and migration 
-`model:generate --name <ModelName> --attributes <Attr1>:<Type>,<Attr2>:<Type>`
-example:
-`model:generate --name Event --attributes title:string,description:string`
+- create database `docker-compose exec api npx sequelize db:create`
+- run migrate ` docker-compose exec api npx sequelize db:migrate`
+- run rollback to migration `docker-compose exec api npx sequelize db:migrate:undo`
+- create model and migration `docker-compose exec api npx sequelize model:generate --name <ModelName> --attributes <Attr1>:<Type>,<Attr2>:<Type>`
 
 find more command on sequelize-cli repo https://github.com/sequelize/cli
+
+## Done Process
+### Events
+### Users

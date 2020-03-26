@@ -25,7 +25,7 @@ const create = (req, res) => {
   User.create(req.body).then(user => {
     res.json(user)
   }).catch(err => {
-    res.json(422, err)
+    res.status(422).json(err)
   })
 }
 
