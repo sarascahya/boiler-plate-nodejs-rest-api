@@ -1,5 +1,12 @@
 const db = require('../models')
 const User = db['User']
+const userSchema = require('../schema/user.schema')
+
+// const createMiddleware = (req, res, next) => {
+//   userSchema.validate({ ...req.body })
+//     .then(user => next())
+//     .catch(error => res.status(422).json(error))
+// }
 
 const find = (req, res) => {
   User.findAll({
@@ -22,11 +29,18 @@ const findById = (req, res) => {
 } 
 
 const create = (req, res) => {
-  User.create(req.body).then(user => {
-    res.json(user)
-  }).catch(err => {
-    res.status(422).json(err)
-  })
+  // User.create(req.body).then(user => {
+  //   res.json(user)
+  // }).catch(err => {
+  //   res.status(422).json(err)
+  // })
+
+  userSchema.validate({ ...req.body }).then(user => {
+    User.create(user).then(data => {
+      res.status(201).json(data)
+    }).catch(error => res.status(422).json(err))
+  }).catch(error => res.status(422).json(error))
+
 }
 
 const destroy = async (req, res) => {
@@ -75,4 +89,5 @@ module.exports = {
   findById,
   destroy,
   update,
+  createMiddleware
 }
