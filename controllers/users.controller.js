@@ -1,12 +1,5 @@
 const db = require('../models')
 const User = db['User']
-const userSchema = require('../schema/user.schema')
-
-// const createMiddleware = (req, res, next) => {
-//   userSchema.validate({ ...req.body })
-//     .then(user => next())
-//     .catch(error => res.status(422).json(error))
-// }
 
 const find = (req, res) => {
   User.findAll({
@@ -14,7 +7,7 @@ const find = (req, res) => {
   }).then(user => {
     res.json(user)
   }).catch(err => {
-    res.json(422, err)
+    res.status(422).json(err)
   })
 }
 
@@ -24,23 +17,16 @@ const findById = (req, res) => {
   }).then(user => {
     res.json(user)
   }).catch(err => {
-    res.json(422, err)
+    res.status(422).json(err)
   })
 } 
 
 const create = (req, res) => {
-  // User.create(req.body).then(user => {
-  //   res.json(user)
-  // }).catch(err => {
-  //   res.status(422).json(err)
-  // })
-
-  userSchema.validate({ ...req.body }).then(user => {
-    User.create(user).then(data => {
-      res.status(201).json(data)
-    }).catch(error => res.status(422).json(err))
-  }).catch(error => res.status(422).json(error))
-
+  User.create(req.body).then(user => {
+    res.status(201).json(user)
+  }).catch(err => {
+    res.status(422).json(err)
+  })
 }
 
 const destroy = async (req, res) => {
@@ -57,7 +43,7 @@ const destroy = async (req, res) => {
   }).then(() => {
     res.json(temp[0])
   }).catch(err => {
-    res.json(422, err)
+    res.status(422).json(err)
   })
 }
 
@@ -78,7 +64,7 @@ const update = (req, res) => {
 
     res.json(temp)
   }).catch(err => {
-    res.json(422, err)
+    res.status(422).json(err)
   })
   
 }
@@ -89,5 +75,4 @@ module.exports = {
   findById,
   destroy,
   update,
-  createMiddleware
 }

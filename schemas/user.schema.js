@@ -2,13 +2,13 @@ const { object, string } = require('yup')
 
 const userSchema = object().shape({
   firstName: string()
-    .required(),
+    .required('required'),
   lastName: string(),
   email: string()
-    .email()
-    .required(),
+    .required('required')
+    .email('must be a valid email'),
   password: string()
-    .required(),
+    .required('required')
 })
 
 module.exports = userSchema
