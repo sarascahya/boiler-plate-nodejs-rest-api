@@ -1,5 +1,7 @@
 const db = require('../models')
 const User = db['User']
+const { hashPassword, comparePassword } = require('../utils/bcrypt')
+const { generateJwt } = require('../utils/jwt')
 
 const find = (req, res) => {
   User.findAll({
@@ -12,9 +14,7 @@ const find = (req, res) => {
 }
 
 const findById = (req, res) => {
-  User.findAll({
-    where: { ...req.params }
-  }).then(user => {
+  User.findByPk(req.params.id).then(user => {
     res.json(user)
   }).catch(err => {
     res.status(422).json(err)
@@ -22,7 +22,10 @@ const findById = (req, res) => {
 } 
 
 const create = (req, res) => {
-  User.create(req.body).then(user => {
+  let { firstName, lastName, username, email, password } = req.body
+  password = hashPassword(password)
+
+  User.create({ firstName, lastName, username, email, password }).then(user => {
     res.status(201).json(user)
   }).catch(err => {
     res.status(422).json(err)
@@ -66,7 +69,26 @@ const update = (req, res) => {
   }).catch(err => {
     res.status(422).json(err)
   })
-  
+}
+
+const login = async (req, res) => {
+  const { email, password } = req.body
+  try {
+    const user = await User.findOne({ email })
+    console.log(user)
+    if (user && comparePassword(password, user.password)) {
+      const token = generateJwt({
+        id: user.id,
+        email: user.email
+      })
+    
+      console.log(token)
+    
+      res.status(200).json({ token })
+    }
+  } catch (err) {
+    res.status(201).send({message: 'invalid email/password'})
+  }
 }
 
 module.exports = {
@@ -75,4 +97,5 @@ module.exports = {
   findById,
   destroy,
   update,
+  login
 }

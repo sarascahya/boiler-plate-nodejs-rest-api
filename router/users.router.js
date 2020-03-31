@@ -4,16 +4,21 @@ const {
   find, 
   findById, 
   destroy, 
-  update 
+  update,
+  login
 } = require('../controllers/users.controller')
 
 const userMiddleware = require('../middlewares/user.middleware')
+const { authentication } = require('../middlewares/auth')
 
 const userRouter = Router()
 
+userRouter.post('/', userMiddleware, create)
+userRouter.post('/login', login)
+
+userRouter.use(authentication)
 userRouter.get('/', find)
 userRouter.get('/:id', findById)
-userRouter.post('/', userMiddleware, create)
 userRouter.put('/:id', userMiddleware, update)
 userRouter.delete('/:id', destroy)
 
