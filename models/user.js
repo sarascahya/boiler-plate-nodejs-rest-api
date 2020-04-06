@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     'User',
@@ -8,8 +8,16 @@ module.exports = (sequelize, DataTypes) => {
       username: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
+      currentSignInAt: DataTypes.DATE,
+      lastSignInAt: DataTypes.DATE,
+      currentSignInIp: DataTypes.DATE,
+      lastSignInIp: DataTypes.DATE,
+      signInCount: DataTypes.INTEGER,
+      uuid: DataTypes.STRING,
+      jti: DataTypes.STRING,
+      level: DataTypes.INTEGER,
     }, 
     {}
   )
-  return User;
-};
+  return User
+}

@@ -6,15 +6,12 @@ exports.login = async (req, res) => {
   const { email, password } = req.body
   try {
     const user = await User.findOne({ email })
-    console.log(user)
     if (user && comparePassword(password, user.password)) {
       const token = generateJwt({
         id: user.id,
+        uuid: user.uuid,
         email: user.email
       })
-    
-      console.log(token)
-    
       res.status(200).json({ token })
     }
   } catch (err) {
