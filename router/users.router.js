@@ -1,25 +1,14 @@
 const { Router } = require('express')
-const { 
-  create, 
-  find, 
-  findById, 
-  destroy, 
-  update,
-  login
-} = require('../controllers/users.controller')
-
-const userMiddleware = require('../middlewares/user.middleware')
-const { authentication } = require('../middlewares/auth')
+const userController = require('../controllers/users.controller')
+const userValidationMiddleware = require('../middlewares/userValidation.middleware')
+const { authentication } = require('../middlewares/authentication.middleware')
+const { authorization } = require('../middlewares/authorization.middleware')
 
 const userRouter = Router()
+userRouter.post('/', userValidationMiddleware, userController.create)
+userRouter.get('/', authentication, userController.find)
+userRouter.get('/:id', authentication, userController.findById)
+userRouter.put('/:id', authentication, userValidationMiddleware, userController.update)
+userRouter.delete('/:id', authentication, userController.destroy)
 
-userRouter.post('/', userMiddleware, create)
-userRouter.post('/login', login)
-
-userRouter.use(authentication)
-userRouter.get('/', find)
-userRouter.get('/:id', findById)
-userRouter.put('/:id', userMiddleware, update)
-userRouter.delete('/:id', destroy)
-
-module.exports = userRouter 
+module.exports = userRouter

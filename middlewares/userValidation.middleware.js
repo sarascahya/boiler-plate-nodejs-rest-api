@@ -1,10 +1,10 @@
 const userSchema = require('../schemas/user.schema')
 const formatError = require('../helpers/formatError')
 
-const userMiddleware = (req, res, next) => {
+const userValidationMiddleware = (req, res, next) => {
   userSchema.validate({ ...req.body }, { abortEarly: false }).then((user) => {
     next()
   }).catch((error) => { res.status(422).json( {errors: formatError(error) } )} )
 }
 
-module.exports = userMiddleware
+module.exports = userValidationMiddleware

@@ -3,13 +3,15 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-const EventRouter = require('./router/event.router')
-const UserRouter = require('./router/users.router')
+const authenticationRouter = require('./router/authentication.router')
+const eventRouter = require('./router/event.router')
+const userRouter = require('./router/users.router')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use('/events', EventRouter)
-app.use('/users', UserRouter)
+app.use('/', authenticationRouter)
+app.use('/events', eventRouter)
+app.use('/users', userRouter)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
