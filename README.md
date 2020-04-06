@@ -22,5 +22,4 @@ This is not a real project, i use this just for learning how to create basic res
 find more command on sequelize-cli repo https://github.com/sequelize/cli
 
 ## Done Process
-### Events
 ### Users
