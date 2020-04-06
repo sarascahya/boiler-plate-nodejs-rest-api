@@ -1,5 +1,5 @@
 const userSchema = require('../schemas/user.schema')
-const formatError = require('../utils/formatError')
+const formatError = require('../helpers/formatError')
 
 const userMiddleware = (req, res, next) => {
   userSchema.validate({ ...req.body }, { abortEarly: false }).then((user) => {

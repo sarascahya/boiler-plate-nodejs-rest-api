@@ -1,7 +1,7 @@
 const db = require('../models')
 const User = db['User']
-const { hashPassword, comparePassword } = require('../utils/bcrypt')
-const { generateJwt } = require('../utils/jwt')
+const { hashPassword, comparePassword } = require('../helpers/bcrypt')
+const { generateJwt } = require('../helpers/jwt')
 
 const find = (req, res) => {
   User.findAll({
