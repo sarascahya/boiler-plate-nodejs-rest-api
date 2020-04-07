@@ -22,7 +22,6 @@ exports.findById = (req, res) => {
 exports.create = (req, res) => {
   let { firstName, lastName, username, email, password } = req.body
   password = hashPassword(password)
-  // jti = jti
 
   User.create({ firstName, lastName, username, email, password }).then(user => {
     res.status(201).json(user)

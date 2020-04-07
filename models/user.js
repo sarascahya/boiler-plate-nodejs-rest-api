@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       currentSignInIp: DataTypes.DATE,
       lastSignInIp: DataTypes.DATE,
       signInCount: DataTypes.INTEGER,
-      jti: DataTypes.STRING,
       level: DataTypes.INTEGER,
     }, 
     {}

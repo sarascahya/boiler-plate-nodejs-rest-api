@@ -24,10 +24,6 @@ module.exports = {
         defaultValue: 0,
         allowNull: true
       }),
-      queryInterface.addColumn('Users', 'jti', {
-        type: Sequelize.STRING,
-        allowNull: true
-      }),
       queryInterface.addColumn('Users', 'level', {
         type: Sequelize.INTEGER,
         defaultValue: 1,
