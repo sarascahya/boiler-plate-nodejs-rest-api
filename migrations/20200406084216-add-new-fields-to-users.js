@@ -24,10 +24,6 @@ module.exports = {
         defaultValue: 0,
         allowNull: true
       }),
-      queryInterface.addColumn('Users', 'uuid', {
-        type: Sequelize.STRING,
-        allowNull: true
-      }),
       queryInterface.addColumn('Users', 'jti', {
         type: Sequelize.STRING,
         allowNull: true
@@ -47,7 +43,6 @@ module.exports = {
       queryInterface.removeColumn('Users', 'currentSignInIp'),
       queryInterface.removeColumn('Users', 'lastSignInIp'),
       queryInterface.removeColumn('Users', 'signInCount'),
-      queryInterface.removeColumn('Users', 'uuid'),
       queryInterface.removeColumn('Users', 'jti'),
       queryInterface.removeColumn('Users', 'level')
     ])

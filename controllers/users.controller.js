@@ -1,6 +1,5 @@
 const User = require('../models')['User']
 const { hashPassword } = require('../helpers/bcrypt')
-const generateUuid = require('../helpers/generateUuid')
 
 exports.find = (req, res) => {
   User.findAll({
@@ -21,11 +20,11 @@ exports.findById = (req, res) => {
 } 
 
 exports.create = (req, res) => {
-  let { firstName, lastName, username, email, password, uuid } = req.body
+  let { firstName, lastName, username, email, password } = req.body
   password = hashPassword(password)
-  uuid = generateUuid()
+  // jti = jti
 
-  User.create({ firstName, lastName, username, email, password, uuid }).then(user => {
+  User.create({ firstName, lastName, username, email, password }).then(user => {
     res.status(201).json(user)
   }).catch(err => {
     res.status(422).json(err)

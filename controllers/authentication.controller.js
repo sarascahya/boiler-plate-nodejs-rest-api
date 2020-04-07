@@ -9,7 +9,6 @@ exports.login = async (req, res) => {
     if (user && comparePassword(password, user.password)) {
       const token = generateJwt({
         id: user.id,
-        uuid: user.uuid,
         email: user.email
       })
       res.status(200).json({ token })
