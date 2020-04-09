@@ -22,15 +22,18 @@ exports.login = async (req, res) => {
 exports.logout = async(req, res) => {
   const token = await req.headers.authorization
 
-  try {
-    await redisClient.LPUSH('token', token);
-    return res.status(200).json({
+  const properties = {
+    isLoggedOut: true
+  }
+
+  if (redisClient.setex(`jwt_blacklist:${token}`, 3600, JSON.stringify(properties))) {
+    res.status(200).json({
       'status': 200,
       'data': 'You are logged out',
     })
-  } catch (error) {
-    return res.status(400).json({
-      'status': 500,
+  } else {
+    res.status(400).json({
+      'status': 400,
       'error': error.toString(),
     })
   }
