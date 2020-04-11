@@ -1,17 +1,21 @@
 const jwt = require('jsonwebtoken')
 
-const secret = process.env.SECRET_JWT
-const expiresIn = '1h'
+const tokenSecret = process.env.TOKEN_SECRET
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET
 
-const generateJwt = (payload) => {
-  return jwt.sign(payload, secret, { expiresIn })
+// time in s
+const tokenExpiredIn = 3600 // 1 hour
+const refreshTokenExpiredIn = 86400 // 1 day
+
+const generateToken = (payload) => {
+  return jwt.sign(payload, tokenSecret, { expiresIn: tokenExpiredIn })
 }
 
-const verifyJwt = (token) => {
-  return jwt.verify(token, secret)
+const generateRefreshToken = (payload) => {
+  return jwt.sign(payload, refreshTokenSecret, { expiresIn: refreshTokenExpiredIn })
 }
 
 module.exports = {
-  generateJwt,
-  verifyJwt
+  generateToken,
+  generateRefreshToken,
 }
