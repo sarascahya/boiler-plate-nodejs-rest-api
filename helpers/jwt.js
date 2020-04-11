@@ -15,7 +15,18 @@ const generateRefreshToken = (payload) => {
   return jwt.sign(payload, refreshTokenSecret, { expiresIn: refreshTokenExpiredIn })
 }
 
+const verifyToken = (token) => {
+  return jwt.verify(token, tokenSecret, (err, decoded) => {
+    if (err) {
+      return false
+    } else {
+      return true
+    }
+  })
+}
+
 module.exports = {
   generateToken,
   generateRefreshToken,
+  verifyToken
 }
