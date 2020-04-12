@@ -9,27 +9,28 @@ const authentication = async (req, res, next) => {
       status: 401,
       error: 'You need to login'
     })
+  } else {
+    redisClient.get(`jwtBlacklist:${token}`, (err, cache) => {
+      const properties = JSON.parse(cache)
+      if (properties && properties.isLoggedOut) {
+        res.status(401).send({
+          status: 401,
+          error: 'You need to login'
+        })
+      } else {
+        const verified = verifyToken(token)
+        if (verified) {
+          next()
+        } else {
+          res.status(403).send({
+            status: 403,
+            error: 'No token provided.'
+          })
+        }
+      }
+
+    })
   }
-
-  redisClient.get(`jwtBlacklist:${token}`, (err, cache) => {
-    const properties = JSON.parse(cache)
-    if (properties && properties.isLoggedOut) {
-      res.status(401).send({
-        status: 401,
-        error: 'You need to login'
-      })
-    } 
-
-    const verified = verifyToken(token)
-    if (verified) {
-      next()
-    } else {
-      res.status(403).send({
-        status: 403,
-        error: 'No token provided.'
-      })
-    }
-  })
 }
 
 module.exports = {
