@@ -29,9 +29,12 @@ services:
     environment:
       ADMINER_PLUGINS: "dump-json"
   redis:
-    image: redis:4.0.5-alpine
+    image: redis
     ports:
       - "6379:6379"
+    sysctls:
+      - net.core.somaxconn=511
+    command: ["redis-server", "--appendonly", "yes"]
 
 volumes:
   dbdata:
