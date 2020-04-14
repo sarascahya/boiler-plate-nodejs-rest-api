@@ -21,14 +21,9 @@ exports.login = async (req, res) => {
       isRefreshToken: true
     }
     redisClient.setex(`refreshToken:${refreshToken}`, 3600, JSON.stringify(properties))
-    
-    res.status(200).json({ 
-      'status': 200,
-      'token': token,
-      'refreshToken': refreshToken
-    })
+    res.sendResponse("success", 2001, { token: token, refreshToken: refreshToken} )
   } else {
-    res.status(201).send({message: 'invalid email/password'})
+    res.sendResponse("error", 1002)
   }
 }
 
@@ -40,15 +35,9 @@ exports.logout = async(req, res) => {
   }
 
   if (redisClient.setex(`jwtBlacklist:${token}`, 3600, JSON.stringify(properties))) {
-    res.status(200).json({
-      'status': 200,
-      'data': 'You are logged out',
-    })
+    res.sendResponse("success", 2002)
   } else {
-    res.status(400).json({
-      'status': 400,
-      'error': error.toString(),
-    })
+    res.sendResponse("error", 1001)
   }
 } 
 
@@ -68,24 +57,14 @@ exports.refreshToken = async (req, res) => {
           id: user.id,
           email: user.email
         })
-  
-        res.status(200).json({ 
-          'status': 200,
-          'token': token,
-          'refreshToken': refreshToken
-        })
+
+        res.sendResponse("success", 2001, {token: token, refreshToken: refreshToken})
       } else {
-        res.status(401).send({
-          status: 401,
-          error: 'You need to login'
-        })
+        res.sendResponse("error", 1002)
       }
     })
   } else {
-    res.status(401).send({
-      status: 401,
-      error: 'You need to login'
-    })
+    res.sendResponse("error", 1002)
   }
 
 }

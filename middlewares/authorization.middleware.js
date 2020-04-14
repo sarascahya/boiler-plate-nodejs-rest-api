@@ -4,7 +4,7 @@ const authorization = (params) => {
     if(params === "admin") {
       next()
     } else {
-      res.status(401).json({message: "you not allow"})
+      res.sendResponse("error", 1007)
     }
   }
 }

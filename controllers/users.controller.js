@@ -5,17 +5,17 @@ exports.find = (req, res) => {
   User.findAll({
     where: { ...req.params }
   }).then(user => {
-    res.json(user)
+    res.sendResponse("success", 2001, user)
   }).catch(err => {
-    res.status(422).json(err)
+    res.sendResponse("error", 1005)
   })
 }
 
 exports.findById = (req, res) => {
   User.findByPk(req.params.id).then(user => {
-    res.json(user)
+    res.sendResponse("success", 2001, user)
   }).catch(err => {
-    res.status(422).json(err)
+    res.sendResponse("error", 1005)
   })
 } 
 
@@ -24,9 +24,9 @@ exports.create = (req, res) => {
   password = hashPassword(password)
 
   User.create({ firstName, lastName, username, email, password }).then(user => {
-    res.status(201).json(user)
+    res.sendResponse("success", 2003, user)
   }).catch(err => {
-    res.status(422).json(err)
+    res.sendResponse("error", 1005)
   })
 }
 
@@ -42,9 +42,9 @@ exports.destroy = async (req, res) => {
       id: req.params.id
     }
   }).then(() => {
-    res.json(temp[0])
+    res.sendResponse("success", 2005, temp[0])
   }).catch(err => {
-    res.status(422).json(err)
+    res.sendResponse("error", 1005)
   })
 }
 
@@ -62,9 +62,8 @@ exports.update = (req, res) => {
         id: req.params.id 
       } 
     }).then(updatedUser => updatedUser).catch(() => null)
-
-    res.json(temp)
+    res.sendResponse("success", 2004, temp)
   }).catch(err => {
-    res.status(422).json(err)
+    res.sendResponse("error", 1006)
   })
 }
