@@ -3,16 +3,20 @@ const { hashPassword } = require('../helpers/bcrypt')
 
 exports.find = (req, res) => {
   User.findAll({
-    where: { ...req.params }
-  }).then(user => {
-    res.sendResponse("success", 2001, user)
+    where: { ...req.params },
+    attributes: ["id", "firstName", "lastName", "username", "email", "level"]
+  }).then(users => {
+    res.sendResponse("success", 2001, users)
   }).catch(err => {
     res.sendResponse("error", 1005)
   })
 }
 
 exports.findById = (req, res) => {
-  User.findByPk(req.params.id).then(user => {
+  User.findByPk(
+    req.params.id, 
+    { attributes: ["id", "firstName", "lastName", "username", "email", "level"] }
+  ).then(user => {
     res.sendResponse("success", 2001, user)
   }).catch(err => {
     res.sendResponse("error", 1005)
@@ -23,8 +27,18 @@ exports.create = (req, res) => {
   let { firstName, lastName, username, email, password } = req.body
   password = hashPassword(password)
 
-  User.create({ firstName, lastName, username, email, password }).then(user => {
-    res.sendResponse("success", 2003, user)
+  User.create(
+    { firstName, lastName, username, email, password },
+  ).then(user => {
+    const response = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      level: user.level,
+    }
+    res.sendResponse("success", 2003, response)
   }).catch(err => {
     res.sendResponse("error", 1005)
   })
@@ -60,8 +74,9 @@ exports.update = (req, res) => {
     const temp = await User.findAll({ 
       where: { 
         id: req.params.id 
-      } 
-    }).then(updatedUser => updatedUser).catch(() => null)
+      }, 
+      attributes: ["id", "firstName", "lastName", "username", "email", "level"]
+    })
     res.sendResponse("success", 2004, temp)
   }).catch(err => {
     res.sendResponse("error", 1006)
