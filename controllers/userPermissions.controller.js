@@ -39,7 +39,6 @@ exports.create = (req, res) => {
     res.sendResponse("success", 2003, response)
   }).catch(err => {
     res.sendResponse("error", 1005)
-    console.log(err)
   })
 }
 

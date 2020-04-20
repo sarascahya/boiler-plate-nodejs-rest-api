@@ -28,19 +28,36 @@ exports.findById = (req, res) => {
 } 
 
 exports.create = (req, res) => {
-  let { firstName, lastName, username, email, password } = req.body
+  let { firstName, lastName, username, email, password, level } = req.body
   password = hashPassword(password)
 
+  if (level) {
+    if (level === "user") {
+      level = 1
+    } else if (level === "admin"){
+      level = 2
+    } else if (level === "superadmin"){
+      level = 3
+    } else {
+      res.sendResponse("error", 1005, {"level": "undefined level"})
+    }
+  } else {
+    level = 1
+    permissions = ["user"]
+  }
+
   User.create(
-    { firstName, lastName, username, email, password },
+    { firstName, lastName, username, email, password, level },
   ).then(user => {
+    generateUserPermission(user.level, user.id)
+    
     const response = {
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       username: user.username,
       email: user.email,
-      level: user.level,
+      level: level,
       createdAt: user.createdAt,
     }
     res.sendResponse("success", 2003, response)
@@ -100,4 +117,22 @@ exports.userPermissions = (req, res) => {
   }).catch(err => {
     res.sendResponse("error", 1005)
   })
-} 
+}
+
+const generateUserPermission = (level, userId) => {
+  if (level === 1) {
+    permissions = ["user"]
+  } else if (level === 2) {
+    permissions = ["admin", "user"]
+  } else if (level === 3) {
+    permissions = ["superAdmin", "admin", "user"]
+  }
+
+  UserPermission.create(
+    { userId, permissions },
+  ).then(userPermission => {
+    return true
+  }).catch(err => {
+    return false
+  })
+}
