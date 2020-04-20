@@ -12,8 +12,9 @@ const authentication = async (req, res, next) => {
       if (properties && properties.isLoggedOut) {
         res.sendResponse("error", 1001)
       } else {
-        const verified = verifyToken(token)
-        if (verified) {
+        const decoded = verifyToken(token)
+        if (decoded) {
+          req.user = decoded
           next()
         } else {
           res.sendResponse("error", 1003)

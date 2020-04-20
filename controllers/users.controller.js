@@ -1,10 +1,11 @@
 const User = require('../models')['User']
+const UserPermission = require('../models')['UserPermission']
 const { hashPassword } = require('../helpers/bcrypt')
 
 exports.find = (req, res) => {
   User.findAll({
     where: { ...req.params },
-    attributes: ["id", "firstName", "lastName", "username", "email", "level"]
+    attributes: ["id", "firstName", "lastName", "username", "email", "level", "createdAt"]
   }).then(users => {
     res.sendResponse("success", 2001, users)
   }).catch(err => {
@@ -15,8 +16,11 @@ exports.find = (req, res) => {
 exports.findById = (req, res) => {
   User.findByPk(
     req.params.id, 
-    { attributes: ["id", "firstName", "lastName", "username", "email", "level"] }
+    { attributes: ["id", "firstName", "lastName", "username", "email", "level", "createdAt"] }
   ).then(user => {
+    if (!user) {
+      res.sendResponse("error", 1005)
+    }
     res.sendResponse("success", 2001, user)
   }).catch(err => {
     res.sendResponse("error", 1005)
@@ -37,6 +41,7 @@ exports.create = (req, res) => {
       username: user.username,
       email: user.email,
       level: user.level,
+      createdAt: user.createdAt,
     }
     res.sendResponse("success", 2003, response)
   }).catch(err => {
@@ -75,10 +80,24 @@ exports.update = (req, res) => {
       where: { 
         id: req.params.id 
       }, 
-      attributes: ["id", "firstName", "lastName", "username", "email", "level"]
+      attributes: ["id", "firstName", "lastName", "username", "email", "level", "createdAt"]
     })
     res.sendResponse("success", 2004, temp)
   }).catch(err => {
     res.sendResponse("error", 1006)
   })
 }
+
+exports.userPermissions = (req, res) => {
+  UserPermission.findOne({
+    where: { userId: req.params.id },
+    attributes: ["id", "userId", "permissions", "createdAt"]
+  }).then(userPermission => {
+    if (!userPermission) {
+      res.sendResponse("error", 1005)
+    }
+    res.sendResponse("success", 2001, userPermission)
+  }).catch(err => {
+    res.sendResponse("error", 1005)
+  })
+} 

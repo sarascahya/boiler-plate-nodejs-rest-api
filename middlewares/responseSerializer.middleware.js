@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
       if (errorMessage) {
         res.status(errorMessage.httpCode).json({
           http: "error",
+          code: content,
           details: {...errorMessage, errors: object}
         })
       } else {
@@ -18,6 +19,7 @@ module.exports = (req, res, next) => {
       if (successMessage) {
         res.status(successMessage.httpCode).json({
           http: "success",
+          code: content,
           details: {...successMessage, data: object}
         })
       } else {
