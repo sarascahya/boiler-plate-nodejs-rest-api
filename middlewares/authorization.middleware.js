@@ -1,4 +1,4 @@
-const authorization = (permissions = []) => {
+const authorization = (permissions = [], me) => {
   return function(req, res, next) {
     if (req.user.level === 1) {
       userLevel = "user" 
@@ -8,10 +8,16 @@ const authorization = (permissions = []) => {
       userLevel = "superadmin" 
     }
 
-    if (permissions.length && !permissions.includes(userLevel)) {
-      res.sendResponse("error", 1007)
-    } else {
+    if (permissions.includes(userLevel)) {
       next()
+    } else if (me === "onlyme") {
+      if (req.user.id == req.params.id) {
+        next()
+      } else {
+        res.sendResponse("error", 1007)
+      }
+    } else {
+      res.sendResponse("error", 1007)
     }
   }
 }
