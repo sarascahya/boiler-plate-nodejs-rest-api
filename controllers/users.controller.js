@@ -125,7 +125,7 @@ const generateUserPermission = (level, userId) => {
   } else if (level === 2) {
     permissions = ["admin", "user"]
   } else if (level === 3) {
-    permissions = ["superAdmin", "admin", "user"]
+    permissions = ["superadmin", "admin", "user"]
   }
 
   UserPermission.create(

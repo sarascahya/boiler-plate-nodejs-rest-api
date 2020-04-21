@@ -10,11 +10,13 @@ exports.login = async (req, res) => {
   if (user && comparePassword(password, user.password)) {
     const token = generateToken({
       id: user.id,
-      email: user.email
+      email: user.email,
+      level: user.level
     })
     const refreshToken = generateRefreshToken({
       id: user.id,
-      email: user.email
+      email: user.email,
+      level: user.level
     })
 
     const properties = {
@@ -51,11 +53,13 @@ exports.refreshToken = async (req, res) => {
       if (properties && properties.isRefreshToken) {
         const token = generateToken({
           id: user.id,
-          email: user.email
+          email: user.email,
+          level: user.level
         })
         const refreshToken = generateRefreshToken({
           id: user.id,
-          email: user.email
+          email: user.email,
+          level: user.level
         })
 
         res.sendResponse("success", 2001, {token: token, refreshToken: refreshToken})
